@@ -1,0 +1,100 @@
+/* Grammar for maTeX langage.
+ * Author : Eric Marcotte UQAM
+ * Project for INF7641
+ * 
+ */
+
+Helpers
+  all               = [0 .. 0xffff];
+  upper             = ['A'..'Z'];
+  lower             = ['a'..'z'];
+  letter            = [lower + upper];
+  digit             = ['0'..'9'];
+  cr                = 13;
+  lf                = 10;
+  tab               = 9;
+  eol               = [cr+lf];
+  not_eol           = [all-eol];
+  not_percent       = [all - '%'];
+  not_quotes        = [all - '"'];
+
+States 
+	latex,
+	matex;
+
+Tokens 
+	{latex}        codelatex = (not_percent* | '\%')*;
+	{latex}        latex_comment = '%' not_percent not_eol* eol;
+	{latex->matex} debut_matex =  '%%';
+	{matex}        usematex = 'use_matex';
+    {matex}        var = 'var';
+    {matex}        fun = 'fun';
+    {matex}        matrix = 'Matrix';
+	{matex}        sum = 'Sum';
+	{matex}        int = 'Int';
+	{matex}        bintree = 'BinTree';  // to do
+	{matex}        algorithm = 'Algo'; //to do 
+	{matex}        identitymatrix = 'MatrixI';
+	{matex}        enum = 'Enum';
+	{matex}        blank_matex = (' ' | tab)+; 
+	{matex}        comma = ',';
+	{matex}        string_literal = '"' (not_quotes* | '\"')* '"';
+	{matex}        equal = '=';
+	{matex}        end_of_line = eol;
+	{matex}        l_par = '(';
+    {matex}        r_par = ')';
+	{matex}        id = letter (letter | digit)*;
+	{matex}        number = digit*;
+	{matex->latex} semicolon = ';';
+
+Ignored Tokens
+   blank_matex;
+   
+Productions
+  file = 
+    {matexon}                debut_matex usematex semicolon sources |
+    {matexoff}               sources;
+  
+  sources =
+    [sources]: source*;
+  
+  source =	
+	{source_latex}           verbatim_latex |
+    {source_matex}           verbatim_matex;
+	
+  verbatim_latex =
+    {normal}                 codelatex |
+	{comment}                latex_comment;
+    
+  verbatim_matex =
+    {variable_type}          debut_matex variable semicolon |
+	{primitive_type_func}    debut_matex primitive_function semicolon |
+	{dynamic_function_type}  debut_matex dynamic_function semicolon;     
+  
+  variable =
+    {variable_eval}          var id equal primitive_function |
+    {variable_declaration}   var id equal string_literal |
+	{variable_swap}          id;
+	
+  primitive_function = 
+    {intern_matrix}          matrix l_par [number_of_line]:number comma 
+	                        [number_of_column]:number r_par |
+	{intern_basic_sum}       sum l_par r_par |
+	{intern_integral}        int l_par args? r_par |
+	{intern_i_matrix}        identitymatrix l_par [size]:number r_par;
+	
+  dynamic_function =
+    {dynamic_func_def}       fun id l_par number r_par equal string_literal |
+	{dynamic_func_call}      id l_par args? r_par;
+
+  args =
+                             [eol1]:end_of_line? arg [additional_args]:additional_arg* 
+							 [eol2]:end_of_line?;
+
+  additional_arg =
+                             comma end_of_line? arg; 
+							
+  arg =
+    {primitive_function}     primitive_function |
+    {variable_id}            id |
+	{latex_direct}           string_literal;
