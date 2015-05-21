@@ -1,3 +1,6 @@
+/*
+ * Author : Eric Marcotte
+ */
 package mathtex;
 
 import java.io.*;
