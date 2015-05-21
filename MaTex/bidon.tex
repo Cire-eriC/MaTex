@@ -1,0 +1,89 @@
+%% use_matex;
+\documentclass[12pt,addpoints]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}   
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usetikzlibrary{arrows,automata,positioning,shapes.multipart}
+
+\begin{document}
+$ %%Int(Sum(),Sum());
+$
+
+%% fun tree(3) = "
+\begin{center}
+	\begin{tikzpicture}[auto,node distance=2.5cm,
+	scale = 1,transform shape,initial text={}]
+	
+	\node[state] (1) {arg[1]};
+	\node[state] (2) [below left of=1] {arg[2]};
+	\node[state] (3) [below right of=1] {arg[3]};
+	
+	\path
+	(1) edge  node {} (2)	
+	(1) edge  node {} (3);	
+	\end{tikzpicture}\\
+\end{center}
+";
+
+%% tree("7","3","8");
+	%test %$ Matrix
+$\sum\limits_{i =1 }^{\infty}$
+
+Verbatim latex $\forall$
+
+\[ %% Matrix(	4 ,  2 );
+\]
+
+$ %%Matrix(10,10); 
+$
+
+\[ %%MatrixI(10); 
+\]
+
+%% var test = "$( \ohm ,\mathcal{F} ,P)$\"";
+Soit %% test; un espace probabilise, montrez que pour tout $A,B \in \mathcal{F}$,\\
+
+%% var lgfloor = "\lfloor log_{2} b \rfloor";
+
+\[ %% Sum(); %% lgfloor; * %% lgfloor; 
+\]
+
+%% var test2 = MatrixI(1);
+Allo $ %% test2;
+$
+
+%% fun itemize(0) = "
+\begin{itemize}
+	\item 
+	\item
+	\item
+\end{itemize}
+";
+
+%% fun itemize2(5) = "
+%\begin{itemize}
+%	\item \"$arg[1]$\"
+%	\item $arg[1]$
+%	\item $arg[2]$
+
+%\end{itemize}
+$arg[3] \\
+arg[4]
+$
+arg[5]
+%";
+
+%% itemize();
+
+
+%% var allo = "allo";
+%% itemize2(lgfloor,"alslo",test2,Sum(),"OK");
+
+\[ %% Int(); %%Int("0","\infty"); %%Int("0","\infty","x");
+ %%Int( Sum(),"\infty","\mathrm{e}^{-x}\,","x");
+ \]
+
+ 
+\end{document}
